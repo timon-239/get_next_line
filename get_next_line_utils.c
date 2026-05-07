@@ -6,7 +6,7 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:04:04 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/07 15:14:12 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/07 15:32:44 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	*ft_memcpy(void *dst, const void *src, size_t n)
 	}
 	return (dst);
 }
+
 static size_t	ft_strlen(const char *str)
 {
 	size_t	i;
@@ -37,6 +38,7 @@ static size_t	ft_strlen(const char *str)
 		i++;
 	return (i);
 }
+
 char	*ft_strchr(const char *str, int c)
 {
 	size_t	i;
@@ -71,6 +73,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ptr[s1_len + s2_len] = '\0';
 	return (ptr);
 }
+
 char	*ft_strdup(const char *s1)
 {
 	char	*p1;
