@@ -6,20 +6,22 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:03:21 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/07 13:40:40 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/07 15:22:07 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*read_and_stash(int fd, char *stash)
+static char	*read_and_stash(int fd, char *stash)
 {
 	char	*temp;
 	char	buffer[BUFFER_SIZE + 1];
 	int		bytes_read;
 
-	while (!ft_strchr(stash, '\n') && (bytes_read = read(fd, buffer,
-				BUFFER_SIZE) > 0))
+	bytes_read = 1;
+	if (!stash)
+		stash = ft_strdup("");
+	while (!ft_strchr(stash, '\n') && ((bytes_read > 0)))
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
@@ -27,7 +29,7 @@ char	*read_and_stash(int fd, char *stash)
 			free(stash);
 			return (NULL);
 		}
-		else if (bytes_read > 0)
+		if (bytes_read > 0)
 		{
 			buffer[bytes_read] = '\0';
 			temp = ft_strjoin(stash, buffer);
@@ -38,18 +40,44 @@ char	*read_and_stash(int fd, char *stash)
 	return (stash);
 }
 
-char	*extract_line(char *stash)
+static char	*extract_line(char *stash)
 {
 	size_t	i;
+	char	*ptr;
+	size_t	j;
 
 	i = 0;
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	ptr = malloc(sizeof(char) * i + 2);
+	if (!ptr)
+		return (NULL);
+	j = 0;
+	while (j <= i && stash[j])
+	{
+		ptr[j] = stash[j];
+		j++;
+	}
+	ptr[j] = '\0';
+	return (ptr);
 }
 
-char	*clean_stash(char *stash)
+static char	*clean_stash(char *stash)
 {
 	size_t	i;
+	char	*new_stash;
 
 	i = 0;
+	while (stash[i] && stash[i] != '\n')
+		i++;
+	if (!stash[i])
+	{
+		free(stash);
+		return (NULL);
+	}
+	new_stash = ft_strdup(stash + i + 1);
+	free(stash);
+	return (new_stash);
 }
 
 char	*get_next_line(int fd)
@@ -65,4 +93,29 @@ char	*get_next_line(int fd)
 	line = extract_line(stash);
 	stash = clean_stash(stash);
 	return (line);
+}
+
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+
+int	main(int argc, char **argv)
+{
+	int		fd;
+	char	*line;
+
+	(void)argc;
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+	{
+		printf("ERROR OPENING FILE");
+		return (1);
+	}
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
 }

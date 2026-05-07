@@ -6,22 +6,37 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:04:04 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/04 17:35:48 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/07 15:14:12 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *str)
+static void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	size_t	len;
+	size_t				i;
+	unsigned char		*ptr;
+	const unsigned char	*ptr2;
 
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
+	i = 0;
+	ptr = (unsigned char *)dst;
+	ptr2 = (const unsigned char *)src;
+	while (i < n)
+	{
+		ptr[i] = ptr2[i];
+		i++;
+	}
+	return (dst);
 }
+static size_t	ft_strlen(const char *str)
+{
+	size_t	i;
 
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
 char	*ft_strchr(const char *str, int c)
 {
 	size_t	i;
@@ -56,23 +71,22 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ptr[s1_len + s2_len] = '\0';
 	return (ptr);
 }
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_strdup(const char *s1)
 {
-	char	*subs;
-	size_t	s_len;
+	char	*p1;
+	size_t	len;
+	size_t	i;
 
-	s_len = ft_strlen(s);
-	if (!s)
+	i = 0;
+	len = ft_strlen(s1);
+	p1 = malloc(sizeof(char) * (len + 1));
+	if (!p1)
 		return (NULL);
-	if (start >= s_len)
-		return (ft_strdup(""));
-	if (len > s_len - start)
-		len = s_len - start;
-	subs = malloc(sizeof(char) * (len + 1));
-	if (!subs)
-		return (NULL);
-	ft_memcpy(subs, s + start, len);
-	subs[len] = '\0';
-	return (subs);
+	while (i < len)
+	{
+		p1[i] = s1[i];
+		i++;
+	}
+	p1[i] = '\0';
+	return (p1);
 }
