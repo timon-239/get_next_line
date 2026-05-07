@@ -6,7 +6,7 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:02:49 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/04 17:37:59 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/07 13:24:54 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 #include <stdlib.h>
 #include <unistd.h>
+
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE = 100
+#endif
 
 size_t	ft_strlen(char *str);
 char	*ft_strchr(const char *str, int c);

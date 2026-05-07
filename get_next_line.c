@@ -6,28 +6,46 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:03:21 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/04 17:50:42 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/07 13:40:40 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*read_and_stash(int fd, static char *stash)
+char	*read_and_stash(int fd, char *stash)
 {
 	char	*temp;
+	char	buffer[BUFFER_SIZE + 1];
+	int		bytes_read;
 
-	temp = ft_strjoin(stash, buffer);
-	free(stash);
+	while (!ft_strchr(stash, '\n') && (bytes_read = read(fd, buffer,
+				BUFFER_SIZE) > 0))
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(stash);
+			return (NULL);
+		}
+		else if (bytes_read > 0)
+		{
+			buffer[bytes_read] = '\0';
+			temp = ft_strjoin(stash, buffer);
+			free(stash);
+			stash = temp;
+		}
+	}
+	return (stash);
 }
 
-char	*extract_line(static char *stash)
+char	*extract_line(char *stash)
 {
 	size_t	i;
 
 	i = 0;
 }
 
-char	*clean_stash(static char *stash)
+char	*clean_stash(char *stash)
 {
 	size_t	i;
 
