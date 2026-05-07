@@ -6,7 +6,7 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:03:21 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/07 15:22:07 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/07 15:30:47 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,19 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = read_and_stash(fd, stash);
-	if (!stash)
+	if (!stash || *stash == '\0')
+	{
+		free(stash);
+		stash = NULL;
 		return (NULL);
+	}
 	line = extract_line(stash);
 	stash = clean_stash(stash);
 	return (line);
 }
 
-#include <fcntl.h>
+/*#include <fcntl.h>
 #include <stdio.h>
-#include <unistd.h>
 
 int	main(int argc, char **argv)
 {
@@ -118,4 +121,4 @@ int	main(int argc, char **argv)
 	}
 	close(fd);
 	return (0);
-}
+}*/
