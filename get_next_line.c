@@ -6,7 +6,7 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:03:21 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/18 16:05:13 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/18 16:24:56 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,17 @@ static char	*extract_line(char *stash)
 	size_t	j;
 
 	i = 0;
+	if (!stash || !*stash)
+		return (NULL);
 	while (stash[i] && stash[i] != '\n')
 		i++;
-	ptr = malloc(sizeof(char) * i + 2);
+	if (stash[i] == '\n')
+		i++;
+	ptr = malloc(sizeof(char) * (i + 1));
 	if (!ptr)
 		return (NULL);
 	j = 0;
-	while (j <= i && stash[j])
+	while (j < i)
 	{
 		ptr[j] = stash[j];
 		j++;
