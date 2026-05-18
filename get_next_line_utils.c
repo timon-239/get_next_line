@@ -6,7 +6,7 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:04:04 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/07 15:32:44 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/18 16:02:28 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,6 @@ static size_t	ft_strlen(const char *str)
 
 char	*ft_strchr(const char *str, int c)
 {
-	size_t	i;
-
-	i = 0;
 	while (*str)
 	{
 		if (*str == (unsigned char)c)
