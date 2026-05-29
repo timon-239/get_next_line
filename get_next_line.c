@@ -1,42 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                       :::      ::::::::    */
-/*   get_next_line.c                                   :+:      :+:    :+:    */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                   +:+ +:+         +:+      */
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:03:21 by tireis           #+#    #+#              */
-/*   Updated: 2026/05/18 17:02:05 by tireis          ###   ########.fr        */
+/*   Updated: 2026/05/29 14:37:33 by tireis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*read_and_stash(int fd, char *stash)
+static char	*join_free(char *stash, char *buffer)
 {
 	char	*temp;
-	char	buffer[BUFFER_SIZE + 1];
+
+	temp = ft_strjoin(stash, buffer);
+	free(stash);
+	if (!temp)
+		return (NULL);
+	return (temp);
+}
+
+static char	*read_and_stash(int fd, char *stash)
+{
+	char	*buffer;
 	int		bytes_read;
 
-	bytes_read = 1;
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (free(stash), NULL);
 	if (!stash)
 		stash = ft_strdup("");
-	while (!ft_strchr(stash, '\n') && ((bytes_read > 0)))
+	bytes_read = 1;
+	while (stash && !ft_strchr(stash, '\n') && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
-		{
-			free(stash);
-			return (NULL);
-		}
-		if (bytes_read > 0)
-		{
-			buffer[bytes_read] = '\0';
-			temp = ft_strjoin(stash, buffer);
-			free(stash);
-			stash = temp;
-		}
+		if (bytes_read < 0)
+			return (free(buffer), free(stash), NULL);
+		buffer[bytes_read] = '\0';
+		stash = join_free(stash, buffer);
 	}
+	free(buffer);
+	if (bytes_read == 0 && (!stash || *stash == '\0'))
+		return (free(stash), NULL);
 	return (stash);
 }
 
