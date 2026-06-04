@@ -6,7 +6,7 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:03:21 by tireis           #+#    #+#              */
-/*   Updated: 2026/06/03 13:31:59 by tireis          ###   ########.fr        */
+/*   Updated: 2026/06/04 13:19:45 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,11 @@ static char	*read_and_stash(int fd, char *stash)
 	if (!buffer)
 		return (free(stash), NULL);
 	if (!stash)
+	{
 		stash = ft_strdup("");
+		if (!stash)
+			return (free(buffer), NULL);
+	}
 	bytes_read = 1;
 	while (stash && !ft_strchr(stash, '\n') && bytes_read > 0)
 	{
