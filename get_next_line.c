@@ -6,7 +6,7 @@
 /*   By: tireis <tireis@student.42vienna.com>      #+#  +:+       +#+         */
 /*                                               +#+#+#+#+#+   +#+            */
 /*   Created: 2026/05/04 15:03:21 by tireis           #+#    #+#              */
-/*   Updated: 2026/06/04 13:19:45 by tireis          ###   ########.fr        */
+/*   Updated: 2026/06/08 14:02:13 by tireis          ###   ########.fr        */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,9 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = read_and_stash(fd, stash);
-	if (!stash || *stash == '\0')
+	if (!stash)
+		return (NULL);
+	if (*stash == '\0')
 	{
 		free(stash);
 		stash = NULL;
