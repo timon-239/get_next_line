@@ -23,7 +23,7 @@ static char	*join_free(char *stash, char *buffer)
 	return (temp);
 }
 
-static char	*read_and_stash(int fd, char *stash)
+static char	*stashing(int fd, char *stash)
 {
 	char	*buffer;
 	int		bytes_read;
@@ -52,7 +52,7 @@ static char	*read_and_stash(int fd, char *stash)
 	return (stash);
 }
 
-static char	*extract_line(char *stash)
+static char	*cutline(char *stash)
 {
 	size_t	i;
 	char	*ptr;
@@ -78,7 +78,7 @@ static char	*extract_line(char *stash)
 	return (ptr);
 }
 
-static char	*clean_stash(char *stash)
+static char	*cleanfunc(char *stash)
 {
 	size_t	i;
 	char	*new_stash;
@@ -101,19 +101,27 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
-	stash = read_and_stash(fd, stash);
-	if (!stash)
-		return (NULL);
-	if (*stash == '\0')
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 	{
 		free(stash);
 		stash = NULL;
 		return (NULL);
 	}
-	line = extract_line(stash);
-	stash = clean_stash(stash);
+	stash = stashing(fd, stash);
+	if (!stash || *stash == '\0')
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
+	line = cutline(stash);
+	if (!line)
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
+	stash = cleanfunc(stash);
 	return (line);
 }
 
